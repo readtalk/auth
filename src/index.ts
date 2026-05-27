@@ -1,3 +1,5 @@
+jadi gue gak perlu ubah apapun di repositories 1 ???
+
 import { issuer } from "@openauthjs/openauth";
 import { CloudflareStorage } from "@openauthjs/openauth/storage/cloudflare";
 import { PasswordProvider } from "@openauthjs/openauth/provider/password";
@@ -69,20 +71,20 @@ export default {
         },
       },
       success: async (ctx, value) => {
-  const userID = await getOrCreateUser(env, value.email);
+        const userID = await getOrCreateUser(env, value.email);
+        
+        // Set subject token claims
+        ctx.subject("user", {
+          id: userID,
+        });
 
-  // subject token claims
-  ctx.subject("user", { id: userID });
-
-  // JWT using
-  const token = await ctx.createToken(value.email); // atau ctx.createAccessToken()
-
-  // Redirect ke email/userId
-  return Response.redirect(
-    `https://messenger.readtalk.workers.dev/auth/callback?token=${token}`,
-    302
-  );
-},
+        // Override: success redirect URL
+        // query params userID email personalize welcome)
+        return Response.redirect(
+          `https://messenger.readtalk.workers.dev/?userId=${userID}&email=${encodeURIComponent(value.email)}&authentication=true`,
+          302
+        );
+      },
     }).fetch(request, env, ctx);
   },
 } satisfies ExportedHandler<Env>;
