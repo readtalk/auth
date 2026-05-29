@@ -79,7 +79,7 @@ export default {
         // Override: success redirect URL
         // query params userID email personalize welcome)
         return Response.redirect(
-          `https://app-readtalk.pages.dev/?userId=${userID}&email=${encodeURIComponent(value.email)}&authentication=true`,
+          `https://readtalk.pages.dev/?userId=${userID}&email=${encodeURIComponent(value.email)}&authentication=true`,
           302
         );
       },
