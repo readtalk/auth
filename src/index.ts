@@ -6,9 +6,7 @@ import { createSubjects } from "@openauthjs/openauth/subject";
 import { object, string } from "valibot";
 
 const subjects = createSubjects({
-	user: object({
-		id: string(),
-	}),
+	user: object({ id: string() }),
 });
 
 export default {
@@ -17,14 +15,12 @@ export default {
 			storage: CloudflareStorage({
 				namespace: env.AUTH_STORAGE,
 			}),
-
 			subjects,
-
 			providers: {
 				password: PasswordProvider(
 					PasswordUI({
 						sendCode: async (email, code) => {
-							console.log(`Sending code ${code} to ${email}`);
+							console.log(code, email);
 						},
 						copy: {
 							input_code: "Code",
@@ -32,17 +28,6 @@ export default {
 					}),
 				),
 			},
-
-			theme: {
-				title: "READTalk Auth",
-				primary: "#ff0000",
-				favicon: "https://readtalk.pages.dev/vite.svg",
-				logo: {
-					dark: "https://readtalk.pages.dev/vite.svg",
-					light: "https://readtalk.pages.dev/vite.svg",
-				},
-			},
-
 			success: async (ctx, value) => {
 				return ctx.subject("user", {
 					id: await getOrCreateUser(env, value.email),
@@ -52,21 +37,17 @@ export default {
 	},
 } satisfies ExportedHandler<Env>;
 
-async function getOrCreateUser(env: Env, email: string): Promise<string> {
-	const result = await env.AUTH_DB.prepare(
-		`
-		INSERT INTO user (email)
-		VALUES (?)
-		ON CONFLICT (email) DO UPDATE SET email = email
-		RETURNING id;
-		`
+async function getOrCreateUser(env: Env, email: string) {
+	const res = await env.AUTH_DB.prepare(
+		`INSERT INTO user (email)
+		 VALUES (?)
+		 ON CONFLICT (email) DO UPDATE SET email=email
+		 RETURNING id`
 	)
 		.bind(email)
 		.first<{ id: string }>();
 
-	if (!result) {
-		throw new Error("User error");
-	}
+	if (!res) throw new Error("user fail");
 
-	return result.id;
+	return res.id;
 }
