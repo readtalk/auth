@@ -70,7 +70,7 @@ export default {
 			return Response.redirect(redirectUrl.toString());
 		}
 
-		if (url.pathname === "/callback") {
+		if (url.pathname === "/") {
 			return Response.json({
 				message: "OAuth flow complete!",
 				params: Object.fromEntries(url.searchParams.entries()),
@@ -86,8 +86,8 @@ export default {
 			// ==================== ✅ CLIENTS REGISTRATION ====================
 			clients: {
 				"readtalk": {
-					redirect_uris: [
-						"https://readtalk.pages.dev/callback",
+					redirect_url: [
+						"https://readtalk.pages.dev/",
 						// Untuk development lokal (opsional)
 						"http://localhost:5173/callback"
 					]
