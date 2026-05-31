@@ -86,7 +86,7 @@ export default {
 			// ==================== ✅ CLIENTS REGISTRATION ====================
 			clients: {
 				"readtalk": {
-					redirect_uri: [
+					redirect_url: [
 						"https://readtalk.pages.dev/callback",
 						// Untuk development lokal (opsional)
 						"http://localhost:5173/callback"
