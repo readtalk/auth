@@ -1,5 +1,3 @@
-Oh jadi ada kekurangan di sini?????
-
 /**
  * READTalk - OpenAuth Worker
  * 
