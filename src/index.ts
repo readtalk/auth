@@ -64,7 +64,7 @@ export default {
 		if (url.pathname === "/") {
 			const redirectUrl = new URL(url);
 			redirectUrl.pathname = "/authorize";
-			redirectUrl.searchParams.set("redirect_uri", url.origin + "/callback");
+			redirectUrl.searchParams.set("redirect_uri", url.origin + "/");
 			redirectUrl.searchParams.set("client_id", "readtalk");
 			redirectUrl.searchParams.set("response_type", "code");
 			return Response.redirect(redirectUrl.toString());
@@ -86,10 +86,10 @@ export default {
 			// ==================== ✅ CLIENTS REGISTRATION ====================
 			clients: {
 				"readtalk": {
-					redirect_url: [
+					redirect_uri: [
 						"https://readtalk.pages.dev/",
 						// Untuk development lokal (opsional)
-						"http://localhost:5173/callback"
+						"http://localhost:5173/"
 					]
 				}
 			},
