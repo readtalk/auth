@@ -42,20 +42,9 @@ export default {
               input_code: "Code (check Worker logs)",
             },
             ui: {
-              primary: "#FF0000",
               stylesheet: `
                 button[type="submit"] {
                   border-radius: 24px !important;
-                  font-weight: 600 !important;
-                  font-size: 16px !important;
-                  padding: 14px 24px !important;
-                  width: 100% !important;
-                  background-color: #FF0000 !important;
-                  color: #FFFFFF !important;
-                  border: none !important;
-                }
-                button[type="submit"]:hover {
-                  opacity: 0.9 !important;
                 }
               `
             }
@@ -65,7 +54,7 @@ export default {
       theme: {
         title: "Authentication",
         primary: "#FF0000",
-        favicon: "https://auth.readtalk.workers.dev//favicon.ico",
+        favicon: "https://auth.readtalk.workers.dev/public/favicon.ico",
         logo: {
           dark: "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/db1e5c92-d3a6-4ea9-3e72-155844211f00/public",
           light: "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/fa5a3023-7da9-466b-98a7-4ce01ee6c700/public",
