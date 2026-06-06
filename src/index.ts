@@ -63,9 +63,9 @@ export default {
 				primary: "#FF0000",
 				favicon: "https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/favicon.ico",
 				logo: {
-					dark: "https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/RT_logo_permanent.svg",
+					dark: "https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/logo.svg",
 					light:
-						"https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/RT_logo_permanent.svg",
+						"https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/logo.svg",
 				},
 			},
 			success: async (ctx, value) => {
