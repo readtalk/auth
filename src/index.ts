@@ -15,35 +15,30 @@ export default {
 	fetch(request: Request, env: Env, ctx: ExecutionContext) {
 		const url = new URL(request.url);
 		
-		// Redirect root ke authorize (demo purpose, bisa dihapus jika tidak perlu)
+		// Redirect root ke authorize (demo purpose)
 		if (url.pathname === "/") {
 			url.searchParams.set("redirect_uri", url.origin + "/callback");
 			url.searchParams.set("client_id", "readtalk");
 			url.searchParams.set("response_type", "code");
 			url.pathname = "/authorize";
 			return Response.redirect(url.toString());
-		} else if (url.pathname === "/callback") {
-			return Response.json({
-				message: "OAuth flow complete!",
-				params: Object.fromEntries(url.searchParams.entries()),
-			});
 		}
+		
+		// ❌ BLOK /callback DIHAPUS (biar redirect ke aplikasi kita)
 
 		return issuer({
 			storage: CloudflareStorage({
 				namespace: env.AUTH_STORAGE,
 			}),
 			subjects,
-			// ==================== TAMBAHKAN CLIENTS ====================
 			clients: {
 				"readtalk": {
 					redirect_uris: [
-						"https://read.readtalk.workers.dev/callback",   // PWA						
-						"http://localhost:5173/callback"                // Local dev
+						"https://read.readtalk.workers.dev/callback",
+						"http://localhost:5173/callback"
 					]
 				}
 			},
-			// ==================== SAMPAI SINI ====================
 			providers: {
 				password: PasswordProvider(
 					PasswordUI({
