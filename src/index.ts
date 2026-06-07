@@ -38,8 +38,7 @@ export default {
 			clients: {
 				"readtalk": {
 					redirect_uris: [
-						"https://read.readtalk.workers.dev/callback",   // PWA dummy
-						"https://readtalk.pages.dev/callback",          // READTalk asli
+						"https://read.readtalk.workers.dev/callback",   // PWA						
 						"http://localhost:5173/callback"                // Local dev
 					]
 				}
