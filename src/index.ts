@@ -5,9 +5,6 @@ import { PasswordUI } from "@openauthjs/openauth/ui/password";
 import { createSubjects } from "@openauthjs/openauth/subject";
 import { object, string } from "valibot";
 
-// This value should be shared between the OpenAuth server Worker and other
-// client Workers that you connect to it, so the types and schema validation are
-// consistent.
 const subjects = createSubjects({
 	user: object({
 		id: string(),
@@ -16,16 +13,12 @@ const subjects = createSubjects({
 
 export default {
 	fetch(request: Request, env: Env, ctx: ExecutionContext) {
-		// This top section is just for demo purposes. In a real setup another
-		// application would redirect the user to this Worker to be authenticated,
-		// and after signing in or registering the user would be redirected back to
-		// the application they came from. In our demo setup there is no other
-		// application, so this Worker needs to do the initial redirect and handle
-		// the callback redirect on completion.
 		const url = new URL(request.url);
+		
+		// Redirect root ke authorize (demo purpose, bisa dihapus jika tidak perlu)
 		if (url.pathname === "/") {
 			url.searchParams.set("redirect_uri", url.origin + "/callback");
-			url.searchParams.set("client_id", "your-client-id");
+			url.searchParams.set("client_id", "readtalk");
 			url.searchParams.set("response_type", "code");
 			url.pathname = "/authorize";
 			return Response.redirect(url.toString());
@@ -36,20 +29,26 @@ export default {
 			});
 		}
 
-		// The real OpenAuth server code starts here:
 		return issuer({
 			storage: CloudflareStorage({
 				namespace: env.AUTH_STORAGE,
 			}),
 			subjects,
+			// ==================== TAMBAHKAN CLIENTS ====================
+			clients: {
+				"readtalk": {
+					redirect_uris: [
+						"https://read.readtalk.workers.dev/callback",   // PWA dummy
+						"https://readtalk.pages.dev/callback",          // READTalk asli
+						"http://localhost:5173/callback"                // Local dev
+					]
+				}
+			},
+			// ==================== SAMPAI SINI ====================
 			providers: {
 				password: PasswordProvider(
 					PasswordUI({
-						// eslint-disable-next-line @typescript-eslint/require-await
 						sendCode: async (email, code) => {
-							// This is where you would email the verification code to the
-							// user, e.g. using Resend:
-							// https://resend.com/docs/send-with-cloudflare-workers
 							console.log(`Sending code ${code} to ${email}`);
 						},
 						copy: {
@@ -64,8 +63,7 @@ export default {
 				favicon: "https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/favicon.ico",
 				logo: {
 					dark: "https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/logo.svg",
-					light:
-						"https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/logo.svg",
+					light: "https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/logo.svg",
 				},
 			},
 			success: async (ctx, value) => {
