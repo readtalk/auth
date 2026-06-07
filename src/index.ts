@@ -15,7 +15,7 @@ export default {
 	fetch(request: Request, env: Env, ctx: ExecutionContext) {
 		const url = new URL(request.url);
 		
-		// Redirect root ke authorize (demo purpose)
+		// Redirect root ke authorize (opsional)
 		if (url.pathname === "/") {
 			url.searchParams.set("redirect_uri", url.origin + "/callback");
 			url.searchParams.set("client_id", "readtalk");
@@ -24,21 +24,13 @@ export default {
 			return Response.redirect(url.toString());
 		}
 		
-		// ❌ BLOK /callback DIHAPUS (biar redirect ke aplikasi kita)
+		// ❌ BLOK /callback DEMO DIHAPUS (biar redirect ke aplikasi PWA)
 
 		return issuer({
 			storage: CloudflareStorage({
 				namespace: env.AUTH_STORAGE,
 			}),
 			subjects,
-			clients: {
-				"readtalk": {
-					redirect_uris: [
-						"https://read.readtalk.workers.dev/callback",
-						"http://localhost:5173/callback"
-					]
-				}
-			},
 			providers: {
 				password: PasswordProvider(
 					PasswordUI({
@@ -51,6 +43,21 @@ export default {
 					}),
 				),
 			},
+			
+			// ==================== allow() ====================
+			allow: async ({ clientID, redirectURI }) => {
+				// Hanya izinkan client_id = "readtalk"
+				if (clientID !== "readtalk") return false;
+				
+				// Hanya izinkan redirect_uri tertentu
+				const allowedUris = [
+					"https://read.readtalk.workers.dev/callback",
+					"http://localhost:5173/callback"
+				];
+				
+				return allowedUris.includes(redirectURI);
+			},
+			
 			theme: {
 				title: "Authentication",
 				primary: "#FF0000",
