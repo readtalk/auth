@@ -5,6 +5,9 @@ import { PasswordUI } from "@openauthjs/openauth/ui/password";
 import { createSubjects } from "@openauthjs/openauth/subject";
 import { object, string } from "valibot";
 
+// This value should be shared between the OpenAuth server Worker and other
+// client Workers that you connect to it, so the types and schema validation are
+// consistent.
 const subjects = createSubjects({
 	user: object({
 		id: string(),
@@ -13,19 +16,27 @@ const subjects = createSubjects({
 
 export default {
 	fetch(request: Request, env: Env, ctx: ExecutionContext) {
+		// This top section is just for demo purposes. In a real setup another
+		// application would redirect the user to this Worker to be authenticated,
+		// and after signing in or registering the user would be redirected back to
+		// the application they came from. In our demo setup there is no other
+		// application, so this Worker needs to do the initial redirect and handle
+		// the callback redirect on completion.
 		const url = new URL(request.url);
-		
-		// Redirect root ke authorize (opsional)
 		if (url.pathname === "/") {
 			url.searchParams.set("redirect_uri", url.origin + "/callback");
-			url.searchParams.set("client_id", "readtalk");
+			url.searchParams.set("client_id", "your-client-id");
 			url.searchParams.set("response_type", "code");
 			url.pathname = "/authorize";
 			return Response.redirect(url.toString());
+		} else if (url.pathname === "/callback") {
+			return Response.json({
+				message: "OAuth flow complete!",
+				params: Object.fromEntries(url.searchParams.entries()),
+			});
 		}
-		
-		// ❌ BLOK /callback DEMO DIHAPUS (biar redirect ke aplikasi PWA)
 
+		// The real OpenAuth server code starts here:
 		return issuer({
 			storage: CloudflareStorage({
 				namespace: env.AUTH_STORAGE,
@@ -34,7 +45,11 @@ export default {
 			providers: {
 				password: PasswordProvider(
 					PasswordUI({
+						// eslint-disable-next-line @typescript-eslint/require-await
 						sendCode: async (email, code) => {
+							// This is where you would email the verification code to the
+							// user, e.g. using Resend:
+							// https://resend.com/docs/send-with-cloudflare-workers
 							console.log(`Sending code ${code} to ${email}`);
 						},
 						copy: {
@@ -43,28 +58,14 @@ export default {
 					}),
 				),
 			},
-			
-			// ==================== allow() ====================
-			allow: async ({ clientID, redirectURI }) => {
-				// Hanya izinkan client_id = "readtalk"
-				if (clientID !== "readtalk") return false;
-				
-				// Hanya izinkan redirect_uri tertentu
-				const allowedUris = [
-					"https://read.readtalk.workers.dev/callback",
-					"http://localhost:5173/callback"
-				];
-				
-				return allowedUris.includes(redirectURI);
-			},
-			
 			theme: {
 				title: "Authentication",
 				primary: "#FF0000",
 				favicon: "https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/favicon.ico",
 				logo: {
 					dark: "https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/logo.svg",
-					light: "https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/logo.svg",
+					light:
+						"https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/logo.svg",
 				},
 			},
 			success: async (ctx, value) => {
