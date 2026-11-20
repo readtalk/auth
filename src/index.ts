@@ -59,8 +59,8 @@ export default {
 				),
 			},
 			theme: {
-				title: "Authentication",
-				primary: "#FF0000",
+				title: "Auth",
+				primary: "#000000",
 				favicon: "https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/favicon.ico",
 				logo: {
 					dark: "https://raw.githubusercontent.com/readtalk/auth/refs/heads/main/public/logo.svg",
