@@ -19,8 +19,8 @@
   "routes": [
     {
       "pattern": "auth.readtalk.web.id",
-      "zone_name": "readtalk.web.id",
-      "custom_domain": true
+      "zone_name": "readtalk.web.id"
+      
     }
   ],
   "observability": {
