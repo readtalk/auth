@@ -12,8 +12,8 @@
 	"d1_databases": [
 		{
 			"binding": "USER_DB",
-			"database_name": "AUTH_DB",
-			"database_id": "03c105b4-52f7-4691-8db4-fca0061b144d"
+			"database_name": "database",
+			"database_id": "30b7f136-c4d1-4ede-a1b1-a258a152401b"
 		}
 	],
 	"observability": {
