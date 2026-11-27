@@ -15,14 +15,7 @@
       "database_name": "database",
       "database_id": "30b7f136-c4d1-4ede-a1b1-a258a152401b"
     }
-  ],
-  "routes": [
-    {
-      "pattern": "auth.readtalk.web.id",
-      "zone_name": "readtalk.web.id",
-      "private": true
-    }
-  ],
+  ],  
   "observability": {
     "enabled": true
   },
