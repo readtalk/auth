@@ -20,7 +20,7 @@
     {
       "pattern": "auth.readtalk.web.id",
       "zone_name": "readtalk.web.id",
-      "custom_domain": true
+      "private": true
     }
   ],
   "observability": {
