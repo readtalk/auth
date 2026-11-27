@@ -21,8 +21,8 @@
 		"typescript": "5.9.3",
 		"wrangler": "4.56.0"
 	},
-	"custom_domain": true,
-	"custom_domain": true,
+	"private": true,
+	"private": true,
 	"scripts": {
 		"cf-typegen": "wrangler types",
 		"check": "tsc && wrangler deploy --dry-run",
