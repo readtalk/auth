@@ -39,7 +39,7 @@ export default {
 		// The real OpenAuth server code starts here:
 		return issuer({
 			storage: CloudflareStorage({
-				namespace: env.AUTH_STORAGE,
+				namespace: env.USER_KV,
 			}),
 			subjects,
 			providers: {
@@ -78,7 +78,7 @@ export default {
 } satisfies ExportedHandler<Env>;
 
 async function getOrCreateUser(env: Env, email: string): Promise<string> {
-	const result = await env.AUTH_DB.prepare(
+	const result = await env.USER_DB.prepare(
 		`
 		INSERT INTO user (email)
 		VALUES (?)
