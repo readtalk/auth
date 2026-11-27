@@ -1,0 +1,11 @@
+-- Migration number: 0002
+ALTER TABLE user ADD COLUMN username TEXT;
+ALTER TABLE user ADD COLUMN yourname TEXT;
+ALTER TABLE user ADD COLUMN date_of_birth TEXT;
+ALTER TABLE user ADD COLUMN avatar TEXT;
+ALTER TABLE user ADD COLUMN header TEXT;
+ALTER TABLE user ADD COLUMN headline TEXT;
+ALTER TABLE user ADD COLUMN about TEXT;
+ALTER TABLE user ADD COLUMN socials TEXT;
+ALTER TABLE user ADD COLUMN location TEXT;
+ALTER TABLE user ADD COLUMN username_updated_at INTEGER;
