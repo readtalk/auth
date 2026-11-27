@@ -22,11 +22,11 @@
 		"wrangler": "4.56.0"
 	},
 	"private": true,
+	"private": true,
 	"scripts": {
 		"cf-typegen": "wrangler types",
 		"check": "tsc && wrangler deploy --dry-run",
 		"deploy": "wrangler deploy",
-		"dev": "wrangler dev",
-		"predeploy": "wrangler d1 migrations apply USER_DB --remote"
+		"dev": "wrangler dev"
 	}
 }
