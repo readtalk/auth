@@ -1,8 +1,8 @@
 {
 	"name": "auth",
-	"description": "Deploy an API server on Cloudflare Workers.",
+	"description": "Deploy an Auth server on Cloudflare Workers.",
 	"cloudflare": {
-		"label": "API Server",
+		"label": "Auth Server",
 		"products": [
 			"Workers",
 			"D1",
