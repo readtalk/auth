@@ -1,23 +1,30 @@
 {
-	"compatibility_date": "2025-10-08",
-	"main": "src/index.ts",
-	"name": "auth",
-	"upload_source_maps": true,
-	"kv_namespaces": [
-		{
-			"binding": "USER_KV",
-			"id": "1459d87c8c9540a69a167f2914af504d"
-		}
-	],
-	"d1_databases": [
-		{
-			"binding": "USER_DB",
-			"database_name": "database",
-			"database_id": "30b7f136-c4d1-4ede-a1b1-a258a152401b"
-		}
-	],
-	"observability": {
-		"enabled": true
-	},
-	"compatibility_flags": ["nodejs_compat"]
+  "compatibility_date": "2025-10-08",
+  "main": "src/index.ts",
+  "name": "auth",
+  "upload_source_maps": true,
+  "kv_namespaces": [
+    {
+      "binding": "USER_KV",
+      "id": "1459d87c8e9540a69a167f2914af504d"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "USER_DB",
+      "database_name": "database",
+      "database_id": "30b7f136-c4d1-4ede-a1b1-a258a152401b"
+    }
+  ],
+  "routes": [
+    {
+      "pattern": "auth.readtalk.web.id",
+      "zone_name": "readtalk.web.id",
+      "custom_domain": true
+    }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "compatibility_flags": ["nodejs_compat"]
 }
